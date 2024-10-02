@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.frame{
+  display: flex;
+  margin-left: 0px;
+  margin-top: 2px;
+}
+
+.screen{
+  display: flex;
+  background-color:aqua;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

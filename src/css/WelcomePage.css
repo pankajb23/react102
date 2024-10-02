@@ -1,0 +1,177 @@
+ /* Welcome Page */
+  .welcome-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .welcome-page h1 {
+    font-size: 2.5rem;
+    color: #ffc107;
+  }
+  
+  .welcome-page p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+  }
+  
+  .details-placeholder {
+    margin: 20%;
+  }
+  
+  .task-list-item.selected:hover{
+    background-color: #ffc107;
+    transition: background-color 0.5s ease-in;
+  }
+
+  .container{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+  }
+  
+  .heading{
+    width: 100%;
+    height: 20%;
+    text-align: center;
+    margin: 20px;
+  }
+
+  .continue-btn {
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .continue-btn:hover {
+    background-color: #ff4949;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .task-layout {
+      flex-direction: column;
+    }
+  
+    .task-list {
+      width: 20%;
+      height: 50%;
+      float: left;
+    }
+  
+    .task-details {
+      width: 100%;
+      height: 50%;
+      float: right;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-list-item h4 {
+      font-size: 1rem;
+    }
+  
+    .task-list-item p {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Floating Plus button container */
+.floating-plus-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 2px;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .floating-plus-container:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Light background on hover */
+  }
+  
+  /* Floating Plus button image */
+  .floating-plus-img {
+    max-width: 10px;
+    max-height: 10px;
+    cursor: pointer;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .floating-plus-container:hover .floating-plus-img {
+    opacity: 1; /* Show image on hover */
+  }
+  
+  .floating-plus-img:hover {
+    opacity: 0.8; /* Slight opacity change on hover */
+  }
+  
+  /* Modal styles */
+  .modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal {
+    background-color: rgb(127, 125, 125);
+    padding: 20px;
+    padding-left: 10px;
+    padding-right: 20px;
+    border-radius: 8px;
+    width: 50%;
+  }
+  
+  .modal h3 {
+    margin-bottom: 20px;
+  }
+  
+  .modal form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    border: 1px solid #221b1b;
+    border-radius: 5px;
+  }
+  
+  .modal form button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: rgb(20, 18, 18);
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .modal form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal form button[type="button"] {
+    background-color: #ccc;
+  }
+  
+  .modal form button[type="button"]:hover {
+    background-color: #999;
+  }

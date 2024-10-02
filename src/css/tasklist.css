@@ -1,0 +1,89 @@
+/* General Layout */
+.task-layout {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    padding-left: 0px;
+    width: 100%;
+    margin: 0px;
+  }
+  
+  .task-list {
+    width: 30%;
+    background-color: #1f1f1f;
+    overflow-y: auto;
+    border-right: 2px solid #444;
+    float: left;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .task-details {
+    width: 70%;
+    background-color: #2c2c2c;
+    color: #fff;
+    overflow-y: auto;
+    float: right;
+    display: flex
+  }
+  
+  .task-list-item {
+    background-color: #333;
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .task-list-item.selected {
+    background-color: #555;
+  }
+  
+  .task-list-item:hover {
+    background-color: #444;
+  }
+  
+  .task-list-item h4 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .task-list-item p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #bbb;
+  }
+  
+  .task-details p {
+    font-size: 1.2rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .task-layout {
+      flex-direction: column;
+    }
+  
+    .task-list {
+      width: 100%;
+      height: 50%;
+    }
+  
+    .task-details {
+      width: 100%;
+      height: 50%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .task-list-item h4 {
+      font-size: 1rem;
+    }
+  
+    .task-list-item p {
+      font-size: 0.75rem;
+    }
+  }
+  
