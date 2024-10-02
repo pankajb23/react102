@@ -1,5 +1,5 @@
 .task {
-    background-color: #524e6c28;
+    /* background-color: #524e6c28; */
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
@@ -31,18 +31,18 @@
   
   .custom-textarea {
     width: 100%; /* Full width of the container */
-    height: 120px; /* Height to make it larger */
-    padding: 10px; /* Padding inside the textarea */
-    margin: 8px; /* Space around the textarea */
+    height: 100%; /* Height to make it larger */
+    padding: 1px; /* Padding inside the textarea */
+    margin: 2px; /* Space around the textarea */
     box-sizing: border-box; /* Ensure padding doesn't affect the width */
-    border: 2px solid #ccc; /* Subtle border color */
-    border-radius: 8px; /* Rounded corners */
-    font-size: 10px; /* Font size for better readability */
-    background-color: #f9f9f9; /* Light background */
+    border: 0px solid #ccc; /* Subtle border color */
+    border-radius: 1px; /* Rounded corners */
+    font-size: 13px; /* Font size for better readability */
+    background-color: rgba(0, 0, 0, 0.1); /* Light background */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
     resize: vertical; /* Allow resizing vertically */
     transition: border-color 0.3s ease-in-out; /* Smooth transition for border */
-    color: #fff; /* Match text color */
+    color: #0c0b0b; /* Match text color */
     outline: none; /* Remove default focus outline */
   }
   
@@ -55,10 +55,21 @@
     height: 15%;
     width: 100%;
     overflow-y: auto;
-    border-radius: 1px;
     background-color: rgba(194, 230, 218, 0.137);     
-    border-style:groove
+    border-radius: 0px;
+    border: outset;
   }
+
+  .color-selection{
+    background-color: #6a8699;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    float: right;
+    transition: background-color 0.3s ease;
+  }
+
   .delete-task-btn {
     background-color: #ff6b6b;
     border: none;
@@ -74,11 +85,27 @@
   }
   
   /* add subTask */
-  .addSubTask{
+  .add-sub-task{
     margin-top: 20px;
     width: 10%;
-    height: 30px;
+    height: clamp(50px, 10%, 100px);
     border:#dfff6b;
     border-radius: 2px;
     border-style: hidden;
   }
+
+.modal input, 
+.modal textarea {
+  width: 100%; /* Make both input and textarea take full width */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* Include padding and border in the element's width */
+  margin-bottom: 10px;
+}
+
+.subtask-textarea {
+  resize: vertical; /* Allow resizing vertically, but width is fixed */
+  min-height: 100px; /* Ensure enough height for the textarea */
+}

@@ -42,7 +42,7 @@ const SubTaskModal = ({ onClose, onAddSubTask }) => {
             className="subtask-textarea"
             placeholder="Enter sub task details..."
             value={newSubTaskDescription}
-            onChange={(e) => setSubNewTaskDate(e.target.value)}
+            onChange={(e) => setSubTaskDescription(e.target.value)}
           />
           <input
             type="date"

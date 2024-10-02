@@ -8,6 +8,7 @@ const taskList = [
     {
         id: 1,
         name: "Sprint 71",
+        description:"",
         createdBy: "John Doe",
         createdDate: "2024-05-01",
         colorCode: "#ff6347",
@@ -19,6 +20,7 @@ const taskList = [
     {
         id: 2,
         name: "Diagnostics incrementally",
+        description:"",
         createdBy: "Jane Smith",
         createdDate: "2024-04-29",
         colorCode: "#4caf50",
@@ -53,8 +55,9 @@ export default function TaskLayout() {
     const handleToggleSubtaskComplete = (subtaskId) => {
         // Implement subtask toggle logic here
         console.log("Toggle Subtask Complete with ID:", subtaskId);
+
     };
-    
+
     const handleAddTask = (newTask) => {
         setTasks([...tasks, newTask]);
     };
@@ -69,30 +72,30 @@ export default function TaskLayout() {
 
     useEffect(() => {
         const handleKeyDown = (event) => {
-          if (event.key === "Escape") {
-            closeModal(); // Close modal when Escape key is pressed
-          }
+            if (event.key === "Escape") {
+                closeModal(); // Close modal when Escape key is pressed
+            }
         };
-    
+
         if (isModalOpen) {
-          // Add event listener if modal is open
-          window.addEventListener("keydown", handleKeyDown);
+            // Add event listener if modal is open
+            window.addEventListener("keydown", handleKeyDown);
         } else {
-          // Remove event listener when modal is closed
-          window.removeEventListener("keydown", handleKeyDown);
+            // Remove event listener when modal is closed
+            window.removeEventListener("keydown", handleKeyDown);
         }
-    
+
         // Cleanup event listener when component unmounts
         return () => {
-          window.removeEventListener("keydown", handleKeyDown);
+            window.removeEventListener("keydown", handleKeyDown);
         };
-      }, [isModalOpen]); // Dependency array includes isModalOpen to trigger effect when modal opens/closes
+    }, [isModalOpen]); // Dependency array includes isModalOpen to trigger effect when modal opens/closes
 
-      
+
     if (showWelcomePage) {
         return (<div><WelcomePage onContinue={() => setShowWelcomePage(false)} /></div>);
     } else {
-        console.log("allTasks "+ tasks.length)
+        console.log("allTasks " + tasks.length)
         return (
             <div className="container">
                 <div className="heading">Welcome Delta, on your task manager</div>
@@ -121,10 +124,10 @@ export default function TaskLayout() {
                     </div>
                 </div>
                 {/* Modal pop-up for adding a new task */}
-                 {isModalOpen && <TaskModal onClose={closeModal} onAddTask={handleAddTask} />}
+                {isModalOpen && <TaskModal onClose={closeModal} onAddTask={handleAddTask} />}
 
                 <div className="floating-plus-container">
-                    <img src={plusImage} alt="Add Task" className="floating-plus-sign" onClick={openModal} style={{width: "50px", height: "50px",objectFit: "cover"}}></img>
+                    <img src={plusImage} alt="Add Task" className="floating-plus-sign" onClick={openModal} style={{ width: "50px", height: "50px", objectFit: "cover" }}></img>
                 </div>
             </div>);
     }

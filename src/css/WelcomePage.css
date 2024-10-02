@@ -86,7 +86,7 @@
 
   /* Floating Plus button container */
 .floating-plus-container {
-    position: fixed;
+    position:sticky;
     bottom: 0;
     left: 0;
     padding: 2px;
@@ -103,8 +103,8 @@
   
   /* Floating Plus button image */
   .floating-plus-img {
-    max-width: 10px;
-    max-height: 10px;
+    max-width: 7px;
+    max-height: 7px;
     cursor: pointer;
     object-fit: cover;
     opacity: 0;
