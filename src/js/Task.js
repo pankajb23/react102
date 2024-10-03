@@ -15,17 +15,17 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export default function Task({ task, onDeleteTask, onDeleteSubtask, onToggleSubtaskComplete }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [subTasks, setSubTasks] = useState(task.subtasks);
+    const [subTasks, setSubTasks] = useState(task.subtasks || []);
     const [selectedColor, setSelectedColor] = useState(task.colorCode); // Default color is white
     const [textArea, setTextArea] = useState(task.description);
-    console.log("Selected task " + task.id + "\t" + task.name + "\t" + task.createdBy + "\t" + subTasks +"\t"+ JSON.stringify(task));
+    console.log("Selected task " + task.id + "\t" + task.name + "\t" + task.createdBy + "\t" + subTasks + "\t" + JSON.stringify(task));
 
     useEffect(() => {
         console.log("About to set subtasks again " + JSON.stringify(task.subtasks));
-        setSubTasks(task.subtasks);
-        setSelectedColor(task.colorCode); 
+        setSubTasks(task.subtasks || []);
+        setSelectedColor(task.colorCode);
         setTextArea(task.textArea);
-    }, [task]);
+    }, [task, task.subTasks]);
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -111,8 +111,9 @@ export default function Task({ task, onDeleteTask, onDeleteSubtask, onToggleSubt
             </div>
             {/* Rendering subtasks */}
             <div className="subtask-list">
-                {subTasks.map((subtask) => (
+                {subTasks.length > 0 && subTasks.map((subtask) => (
                     <Subtask
+                        parentTask={task}
                         key={subtask.id}
                         subtask={subtask}
                         onDelete={onDeleteSubtask}

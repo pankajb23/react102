@@ -14,12 +14,12 @@ import '../css/subtask.css';
  * @returns 
  */
 
-export default function Subtask({ subtask, onDelete, onToggleComplete }) {
+export default function Subtask({ parentTask, subtask, onDelete, onToggleComplete }) {
   return (
     <div className={`subtask ${subtask.isCompleted ? 'completed' : ''}`}>
       <div className="subtask-header">
         <h3 className="subtask-title">{subtask.name}</h3>
-        <button className="delete-btn" onClick={() => onDelete(subtask.id)}>
+        <button className="delete-btn" onClick={() => onDelete(parentTask.id, subtask.id)}>
           Delete
         </button>
       </div>
