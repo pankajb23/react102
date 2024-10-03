@@ -38,7 +38,7 @@ export default function TaskLayout() {
 
     const handleTaskClick = (task) => {
         setSelectedTask(task);
-
+        console.log("Updating selected task "+ JSON.stringify(task));
         setShowWelcomePage(false); // Hide the welcome page when a task is selected
     };
 
@@ -47,7 +47,7 @@ export default function TaskLayout() {
         const updatedTasks = allTasks.filter(task => task.id !== taskId);
 
         // Update the state with the filtered tasks
-        setTasks(updatedTasks);
+        setTasks([...updatedTasks]);
 
         console.log("Deleted Task with ID:", taskId);
     };
@@ -59,16 +59,19 @@ export default function TaskLayout() {
             if (task.id === taskId) {
                 // Filter out the subTask with the matching subTaskId
                 const updatedSubTasks = task.subtasks.filter(subTask => subTask.id !== subtaskId);
-
+                const newTask = { ...task, subtasks: updatedSubTasks };
+                if(selectedTask && selectedTask.id === taskId){
+                    handleTaskClick(newTask);
+                }
                 // Return a new task object with updated subTasks
-                return { ...task, subtasks: updatedSubTasks };
+                return newTask;
             } else {
                 // Return the task as is if it doesn't match the taskId
                 return task;
             }
         });
         console.log("Delete Subtask with ID:" + subtaskId + " and taskId " + taskId + " and json of the rest of the tasks " + JSON.stringify(updatedTasks));
-        setTasks(updatedTasks);
+        setTasks([...updatedTasks]);
     };
 
     const handleToggleSubtaskComplete = (subtaskId) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Subtask from "./Subtask.js"; // Assuming Subtask component is imported
 import '../css/task.css';
 import SubTaskModal from "./SubTaskModal.js";
@@ -19,13 +19,14 @@ export default function Task({ task, onDeleteTask, onDeleteSubtask, onToggleSubt
     const [selectedColor, setSelectedColor] = useState(task.colorCode); // Default color is white
     const [textArea, setTextArea] = useState(task.description);
     console.log("Selected task " + task.id + "\t" + task.name + "\t" + task.createdBy + "\t" + subTasks + "\t" + JSON.stringify(task));
-
+    
     useEffect(() => {
         console.log("About to set subtasks again " + JSON.stringify(task.subtasks));
         setSubTasks(task.subtasks || []);
         setSelectedColor(task.colorCode);
         setTextArea(task.textArea);
-    }, [task, task.subTasks]);
+    });
+    // }, [task.subtasks, task.colorCode, task.textArea]);
 
     const closeModal = () => {
         setIsModalOpen(false);
