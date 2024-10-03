@@ -38,7 +38,7 @@ export default function TaskLayout() {
 
     const handleTaskClick = (task) => {
         setSelectedTask(task);
-        console.log("Updating selected task "+ JSON.stringify(task));
+        console.log("Updating selected task " + JSON.stringify(task));
         setShowWelcomePage(false); // Hide the welcome page when a task is selected
     };
 
@@ -60,7 +60,7 @@ export default function TaskLayout() {
                 // Filter out the subTask with the matching subTaskId
                 const updatedSubTasks = task.subtasks.filter(subTask => subTask.id !== subtaskId);
                 const newTask = { ...task, subtasks: updatedSubTasks };
-                if(selectedTask && selectedTask.id === taskId){
+                if (selectedTask && selectedTask.id === taskId) {
                     handleTaskClick(newTask);
                 }
                 // Return a new task object with updated subTasks
@@ -74,10 +74,31 @@ export default function TaskLayout() {
         setTasks([...updatedTasks]);
     };
 
-    const handleToggleSubtaskComplete = (subtaskId) => {
+    const handleToggleSubtaskComplete = (taskId, subtaskId) => {
         // Implement subtask toggle logic here
-        console.log("Toggle Subtask Complete with ID:", subtaskId);
-
+        console.log("Toggle Subtask Complete with ID:" + subtaskId + "\t" + " taskID " + taskId);
+        const updatedTasks = allTasks.map(task => {
+            if (task.id === taskId) {
+                const newTask = {
+                    ...task, subtasks: task.subtasks.map((s) => {
+                        if (s.id === subtaskId) {
+                            return { ...s, isCompleted: !s.isCompleted };
+                        } else {
+                            return s;
+                        }
+                    })
+                }
+                if (selectedTask && selectedTask.id === taskId) {
+                    handleTaskClick(newTask);
+                }
+                return newTask;
+            } else {
+                // Return the task as is if it doesn't match the taskId
+                return task;
+            }
+        });
+        console.log("toggle subtasks ");
+        setTasks([...updatedTasks]);
     };
 
     const handleAddTask = (newTask) => {

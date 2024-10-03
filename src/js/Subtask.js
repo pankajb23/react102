@@ -33,7 +33,7 @@ export default function Subtask({ parentTask, subtask, onDelete, onToggleComplet
           <input
             type="checkbox"
             checked={subtask.isCompleted}
-            onChange={() => onToggleComplete(subtask.id)}
+            onChange={() => onToggleComplete(parentTask.id, subtask.id)}
           />
           Completed
         </label>
