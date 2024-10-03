@@ -18,6 +18,14 @@ export default function Task({ task, onDeleteTask, onDeleteSubtask, onToggleSubt
     const [subTasks, setSubTasks] = useState(task.subtasks);
     const [selectedColor, setSelectedColor] = useState(task.colorCode); // Default color is white
     const [textArea, setTextArea] = useState(task.description);
+    console.log("Selected task " + task.id + "\t" + task.name + "\t" + task.createdBy + "\t" + subTasks +"\t"+ JSON.stringify(task));
+
+    useEffect(() => {
+        console.log("About to set subtasks again " + JSON.stringify(task.subtasks));
+        setSubTasks(task.subtasks);
+        setSelectedColor(task.colorCode); 
+        setTextArea(task.textArea);
+    }, [task]);
 
     const closeModal = () => {
         setIsModalOpen(false);
@@ -95,25 +103,23 @@ export default function Task({ task, onDeleteTask, onDeleteSubtask, onToggleSubt
             <h5 style={{ borderLeft: `0px solid #f34566`, margin: 0, padding: 10, color: '#4a90e2' }}> Task description</h5>
             <div className="task-description">
                 <textarea className="custom-textarea"
-                 type="text"
-                 value={textArea}
-                 onChange={handleOnblur}
-                 onBlur={handleOnblur}
-                 />
+                    type="text"
+                    value={textArea}
+                    onChange={handleOnblur}
+                    onBlur={handleOnblur}
+                />
             </div>
             {/* Rendering subtasks */}
-            {subTasks && subTasks.length > 0 && (
-                <div className="subtask-list">
-                    {subTasks.map((subtask) => (
-                        <Subtask
-                            key={subtask.id}
-                            subtask={subtask}
-                            onDelete={onDeleteSubtask}
-                            onToggleComplete={onToggleSubtaskComplete}
-                        />
-                    ))}
-                </div>
-            )}
+            <div className="subtask-list">
+                {subTasks.map((subtask) => (
+                    <Subtask
+                        key={subtask.id}
+                        subtask={subtask}
+                        onDelete={onDeleteSubtask}
+                        onToggleComplete={onToggleSubtaskComplete}
+                    />
+                ))}
+            </div>
             <div>
                 {isModalOpen && <SubTaskModal onClose={closeModal} onAddSubTask={handleAddSubTask} />}
                 {!isModalOpen &&

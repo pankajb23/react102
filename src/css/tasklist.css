@@ -9,8 +9,8 @@
   }
   
   .task-list {
-    width: 30%;
-    background-color: #1f1f1f;
+    width: 25%;
+    background-color: #FAF9F6;
     overflow-y: auto;
     border-right: 2px solid #444;
     float: left;
@@ -19,7 +19,7 @@
   }
   
   .task-details {
-    width: 70%;
+    width: 75%;
     background-color: #2c2c2c;
     color: #fff;
     overflow-y: auto;
@@ -28,17 +28,17 @@
   }
   
   .task-list-item {
-    background-color: #333;
-    color: #fff;
-    margin-bottom: 10px;
-    padding: 15px;
+    background-color: #ECECEC;
+    color: black;
+    margin-bottom: 5px;
+    padding: 20px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s;
   }
   
   .task-list-item.selected {
-    background-color: #555;
+    background-color: #7a7979;
   }
   
   .task-list-item:hover {

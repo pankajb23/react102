@@ -89,22 +89,25 @@
     position:sticky;
     bottom: 0;
     left: 0;
-    padding: 2px;
-    background-color: transparent;
+    padding: 1px;
+    background-color: #34D399;
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
     transition: background-color 0.3s ease-in-out;
+    width: 5px;
   }
   
   .floating-plus-container:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Light background on hover */
+    background-color: black; /* Light background on hover */
+    max-width: 10px;
+    transition: opacity 0.3s ease-in-out;
   }
   
   /* Floating Plus button image */
   .floating-plus-img {
-    max-width: 7px;
-    max-height: 7px;
+    max-width: 5px;
+    max-height: 5px;
     cursor: pointer;
     object-fit: cover;
     opacity: 0;
@@ -116,7 +119,10 @@
   }
   
   .floating-plus-img:hover {
-    opacity: 0.8; /* Slight opacity change on hover */
+    opacity: 0.4; /* Slight opacity change on hover */
+    max-width: 10px;
+    max-height: 10px;
+    transition: opacity 0.3s ease-in-out;
   }
   
   /* Modal styles */

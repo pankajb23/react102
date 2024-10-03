@@ -28,7 +28,6 @@ const taskList = [
             { id: 3, name: "Fix navigation issues", description: "Handle onChange in forms", createdAt: "2024-04-29", dueDate: "2024-05-03", isCompleted: false },
         ],
     },
-    // Add more tasks as needed
 ];
 
 export default function TaskLayout() {
@@ -39,6 +38,7 @@ export default function TaskLayout() {
 
     const handleTaskClick = (task) => {
         setSelectedTask(task);
+        
         setShowWelcomePage(false); // Hide the welcome page when a task is selected
     };
 
@@ -95,7 +95,6 @@ export default function TaskLayout() {
     if (showWelcomePage) {
         return (<div><WelcomePage onContinue={() => setShowWelcomePage(false)} /></div>);
     } else {
-        console.log("allTasks " + tasks.length)
         return (
             <div className="container">
                 <div className="heading">Welcome Delta, on your task manager</div>
@@ -120,14 +119,17 @@ export default function TaskLayout() {
                                 onDeleteTask={handleDeleteTask}
                                 onDeleteSubtask={handleDeleteSubtask}
                                 onToggleSubtaskComplete={handleToggleSubtaskComplete}
-                            />) : <div className="details-placeholder"><p>    List Tasks</p></div>}
+                            />) : <div className="details-placeholder"><p>    No task selected </p></div>
+                            }
                     </div>
                 </div>
                 {/* Modal pop-up for adding a new task */}
                 {isModalOpen && <TaskModal onClose={closeModal} onAddTask={handleAddTask} />}
-
                 <div className="floating-plus-container">
-                    <img src={plusImage} alt="Add Task" className="floating-plus-sign" onClick={openModal} style={{ width: "50px", height: "50px", objectFit: "cover" }}></img>
+                    <img src={plusImage} alt="Add Task" 
+                        className="floating-plus-sign" 
+                        onClick={openModal}
+                        style={{ width: "50px", height: "50px", objectFit: "cover" }}/>
                 </div>
             </div>);
     }

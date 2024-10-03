@@ -88,8 +88,8 @@
   .add-sub-task{
     margin-top: 20px;
     width: 10%;
-    height: clamp(50px, 10%, 100px);
-    border:#dfff6b;
+    height: max(70px, 20%);
+    background-color: #34D399;
     border-radius: 2px;
     border-style: hidden;
   }
