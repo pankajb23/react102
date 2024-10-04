@@ -3,7 +3,7 @@ import rootReducer from './rootReducer';
 import nestedDataReducer from "/TaskSlicer.js";
 
 const store = configureStore({
-  reducer: nestedDataReducer,
+  reducer: nestedDataReducer
 });
 
 export default store;
