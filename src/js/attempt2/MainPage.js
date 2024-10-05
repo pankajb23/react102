@@ -1,4 +1,4 @@
-import { Container, Navbar, Offcanvas, Nav, Button, Row, Col } from 'react-bootstrap';
+import { Container, Navbar, Offcanvas, Nav, Button, Row, Col, Modal } from 'react-bootstrap';
 import React, { useState } from 'react';
 import { selectAllTasks, selectTask, getSelectedTask } from '../TaskSlicer';
 import img from '../../img/logo.png';
@@ -6,11 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { List } from 'lucide-react';
 import Task from "./Task.js";
 import DisplayTask from "./DisplayTask.js";
+import TaskModal from "./TaskModal.js";
 
 const MainPage = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const allTasks = useSelector(selectAllTasks);
-
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
   const handleCloseSidebar = () => setShowSidebar(false);
   const handleShowSidebar = () => setShowSidebar(true);
   const selectedTask = useSelector(getSelectedTask);
@@ -54,27 +56,32 @@ const MainPage = () => {
           <Nav className="flex-column" >
             {allTasks && allTasks.length > 0 ? (
               allTasks.map(task => {
-
                 return <Task
                   key={task.id}
                   task={task}
                   onClick={() => {
                     dispatch(selectTask({ task }));
-                  }
-                  } />
+                  }} />
               }
               )) : (
               <span className="text-muted">No tasks available</span>
             )}
           </Nav>
         </Offcanvas.Body>
+        <div className="p-3">
+          <Button variant="primary" onClick={() => setShowModal(true)} className="w-100">
+            Add Task
+          </Button>
+        </div>
       </Offcanvas>
+
+      <TaskModal showModal={showModal} handleCloseModal={handleCloseModal} />
 
       {/* Main Content */}
       <Container fluid className="flex-grow-1 mt-5 pt-5">
         <Row className="h-100">
           <Col className="main-content">
-            <DisplayTask task={selectedTask} />
+            <DisplayTask taskId={selectedTask.id} />
           </Col>
         </Row>
       </Container>

@@ -8,7 +8,10 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { removeSubtask } from '../TaskSlicer';
+import { removeSubTask } from '../TaskSlicer.js';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 
 
@@ -21,7 +24,6 @@ export default function SubTask({ taskId, subtaskId }) {
 
     const subtask = useSelector(state => getSelectedSubTask(state, taskId, subtaskId));
 
-    console.log("Subtask " + JSON.stringify(subtask));
 
     const dispatch = useDispatch();
 
@@ -74,12 +76,31 @@ export default function SubTask({ taskId, subtaskId }) {
                             </Form.Select>
                         </Card.Text>
                     </Card.Body>
-                    <Card.Footer style={{ border: 'none' }} className='d-flex' >
+                    <Card.Footer style={{ border: 'none', justifyContent: 'space-between' }} className='d-flex justify-content-center align-items-center' >
                         <Table>
-                            <tbody>
+                            <thead>
                                 <tr>
-                                    <td>Start Date : {subtask.createdAt}</td>
-                                    <td>Due Date : {subtask.dueDate}</td>
+                                    <th>Start Date</th>
+                                    <th>Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        <DatePicker selected={subtask.createdAt} onChange={(date) => dispatch(updateSubTaskAttribute({
+                                            taskId: taskId,
+                                            "subTaskId": subtaskId,
+                                            "attribute": "createdAt",
+                                            "value": date
+                                        }))} /></td>
+                                    <td>
+                                        <DatePicker selected={subtask.dueDate} onChange={(date) => dispatch(updateSubTaskAttribute({
+                                            taskId: taskId,
+                                            "subTaskId": subtaskId,
+                                            "attribute": "dueDate",
+                                            "value": date
+                                        }))} /></td>
                                 </tr>
                             </tbody>
                         </Table>

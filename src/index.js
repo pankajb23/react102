@@ -19,6 +19,30 @@ const store = configureStore({
     nestedData: nestedDataReducer,
   },
 });
+
+function debounce(func, wait) {
+  let timeout;
+  return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+const saveState = debounce(() => {
+  try {
+      const state = store.getState();
+      const serializedState = JSON.stringify(state.nestedData);
+      console.log("Saving state to local storage");
+      localStorage.setItem('nestedDataState', serializedState);
+  } catch (e) {
+      console.warn('Failed to save state to localStorage:', e);
+  }
+}, 1000); // Adjust the wait time as needed
+
+store.subscribe(() => {
+  saveState();
+});
+
 console.log("I hope reducer are finally up.")
 root.render(
   <React.StrictMode>

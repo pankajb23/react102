@@ -1,6 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+function loadStateFromLocalStorage() {
+    try {
+        console.log("Loading state from local storage");
+        const serializedState = localStorage.getItem('nestedDataState');
+        if (serializedState === null) {
+            return undefined; // No state saved in localStorage
+        }
+        return JSON.parse(serializedState);
+    } catch (e) {
+        console.warn('Failed to load state from localStorage:', e);
+        return undefined;
+    }
+}
+
+const initialState = loadStateFromLocalStorage() || {
     tasks: [
         {
             id: 1,
@@ -45,13 +59,19 @@ const nestedDataSlice = createSlice({
     initialState,
     reducers: {
         addTask: (state, action) => {
-            state.tasks.push({
+            const { name, description, createdBy, createdAt } = action.payload;
+            const task = {
                 id: IdGenerator++,
-                name: action.payload.name,
-                description: action.payload.description,
-                createdBy: action.payload.createdBy,
-                createdDate: action.payload.createdDate
-            });
+                name: name,
+                description: description,
+                createdBy: createdBy,
+                createdDate: createdAt,
+                subtasks: []
+            };
+            console.log("Adding task " + JSON.stringify(task));
+            state.tasks.push(task);
+            state.selectedTask = task.id;
+
         },
         addSubTask: (state, action) => {
             const { taskId, subTaskName, description, startDate, dueDate } = action.payload;
@@ -60,17 +80,18 @@ const nestedDataSlice = createSlice({
                 let subTaskId;
                 if (!task.subtasks || task.subtasks.length === 0) {
                     subTaskId = 1;
-                    task.subtasks.push([]);    // pushing empty array.
+                    // task.subtasks.push([]);    // pushing empty array.
                 } else {
-                    subTaskId = task.subtasks.reduce((max, obj) => obj.id > max.id ? obj : max, task.subtasks[0]) + 1;
+                    if (task.subtasks.length === 1) {
+                        // If there is only one subtask, set the new ID as the current subtask ID + 1
+                        subTaskId = task.subtasks[0].id + 1;
+                    } else {
+                        // If there are multiple subtasks, find the maximum ID and add 1
+                        subTaskId = task.subtasks.reduce((max, obj) => (obj.id > max ? obj.id : max), 0) + 1;
+                    }
                 }
-                task.subtasks.push({
-                    id: subTaskId,
-                    name: subTaskName,
-                    description: description,
-                    startDate: startDate,
-                    endDate: dueDate
-                });
+                const subtask = { id: subTaskId, name: subTaskName, description: description, createdAt: startDate, dueDate: dueDate, status: "Not Started" };
+                task.subtasks.push(subtask);
             }
         },
         updateSubTaskAttribute: (state, action) => {
@@ -79,15 +100,16 @@ const nestedDataSlice = createSlice({
             console.log("Updating subtask attribute " + taskId + " " + subTaskId + " " + attribute + " " + value);
             const task = state.tasks.find(task => task.id === taskId);
             if (task) {
-                const subtask = task.subtasks.find(subTask => subTaskId == subTask.id);
+                const subtask = task.subtasks.find(subTask => subTaskId === subTask.id);
                 if (subtask) {
                     subtask[attribute] = value;
                 }
             }
         },
         removeTask: (state, action) => {
-            const { id } = action.payload;
-            state.tasks = state.tasks.filter(task => task.id !== id);
+            const { taskId } = action.payload;
+            console.log("Removing task " + taskId);
+            state.tasks = state.tasks.filter(task => task.id !== taskId);
         },
         removeSubTask: (state, action) => {
             const { taskId, subTaskId } = action.payload;
@@ -113,17 +135,27 @@ const nestedDataSlice = createSlice({
     },
 });
 
-export const { addTask, addSubtask, updateSubTaskAttribute, removeTask, removeSubtask, selectTask } = nestedDataSlice.actions;
+export const { addTask, addSubTask, updateSubTaskAttribute, removeTask, removeSubTask, selectTask } = nestedDataSlice.actions;
 
 // Selectors
 export const selectAllTasks = state => state.nestedData.tasks;
 export const selectTaskById = (state, taskId) => state.nestedData.tasks.find(task => task.id === taskId);
-export const getSelectedTask = state => state.nestedData.tasks.find(task => task.id === state.nestedData.selectedTask);
+export const getSelectedTask = state => {
+    const task = state.nestedData.tasks.find(task => task.id === state.nestedData.selectedTask);
+    if (task) {
+        return task;
+    } else {
+        // task is deleleted. 
+        if (state.nestedData.tasks.length > 0) {
+            state.selectedTask = state.nestedData.tasks[0].id;
+        }
+        return state.nestedData.tasks[0];
+    }
+}
 export const getSelectedSubTask = (state, taskId, subTaskId) => {
     const task = state.nestedData.tasks.find(task => task.id === taskId);
     if (task) {
         const subtask = task.subtasks.find(subtask => subtask.id === subTaskId);
-        console.log("Subtask " + JSON.stringify(subtask));
         return subtask;
     }
     return null;
