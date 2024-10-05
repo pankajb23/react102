@@ -1,81 +1,92 @@
-import React from "react";
-import { useSelector } from 'react-redux';
-import { selectAllTasks } from "../Selectors";
-import {  Offcanvas } from "react-bootstrap";
-import img from "../../img/logo.png";
+import { Container, Navbar, Offcanvas, Nav, Button, Row, Col } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { selectAllTasks, selectTask, getSelectedTask } from '../TaskSlicer';
+import img from '../../img/logo.png';
+import { useSelector, useDispatch } from 'react-redux';
+import { List } from 'lucide-react';
+import Task from "./Task.js";
+import DisplayTask from "./DisplayTask.js";
 
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+const MainPage = () => {
+  const [showSidebar, setShowSidebar] = useState(false);
+  const allTasks = useSelector(selectAllTasks);
 
-function MainPage() {
+  const handleCloseSidebar = () => setShowSidebar(false);
+  const handleShowSidebar = () => setShowSidebar(true);
+  const selectedTask = useSelector(getSelectedTask);
+
+  const dispatch = useDispatch();
+  // console.log("Main Page " + JSON.stringify(selectedTask));
+  // console.log("Main Page with all Tasks " + JSON.stringify(allTasks));
+
   return (
-    <>
-      <Navbar bg="dark" data-bs-theme="dark">
-        <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-        </Container>
-      </Navbar>
-      <br />
-      <Navbar bg="primary" data-bs-theme="dark">
-        <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
+    <div className="d-flex flex-column min-vh-100">
+      {/* Navbar */}
+      <Navbar bg="dark" variant="dark" fixed="top">
+        <Container fluid>
+          <Button variant="outline-light" onClick={handleShowSidebar} className="me-2">
+            <List size={24} />
+          </Button>
+          <Navbar.Brand href="#home">
+            <img
+              alt="Task Manager"
+              src={img}
+              width="80"
+              height="40"
+              className="d-inline-block align-top"
+            />{''}
+          </Navbar.Brand>
         </Container>
       </Navbar>
 
-      <br />
-      <Navbar bg="light" data-bs-theme="light">
-        <Container>
-          <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+      {/* Offcanvas Sidebar */}
+      <Offcanvas
+        show={showSidebar}
+        onHide={handleCloseSidebar}
+        backdrop={false}
+        placement="start"
+        style={{ top: '66px', background: 'white' }} // Adjusting for navbar height
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>Tasks</Offcanvas.Title>
+        </Offcanvas.Header>
+        <Offcanvas.Body style={{ margin: '0px', padding: '0px' }}>
+          <Nav className="flex-column" >
+            {allTasks && allTasks.length > 0 ? (
+              allTasks.map(task => {
+
+                return <Task
+                  key={task.id}
+                  task={task}
+                  onClick={() => {
+                    dispatch(selectTask({ task }));
+                  }
+                  } />
+              }
+              )) : (
+              <span className="text-muted">No tasks available</span>
+            )}
           </Nav>
+        </Offcanvas.Body>
+      </Offcanvas>
+
+      {/* Main Content */}
+      <Container fluid className="flex-grow-1 mt-5 pt-5">
+        <Row className="h-100">
+          <Col className="main-content">
+            <DisplayTask task={selectedTask} />
+          </Col>
+        </Row>
+      </Container>
+
+      {/* Footer */}
+      <footer className="mt-auto py-3 bg-light">
+        <Container>
+          <span className="text-muted">© 2024 Task Manager. All rights reserved.</span>
         </Container>
-      </Navbar>
-    </>
+      </footer>
+    </div>
   );
-}
+};
 
 export default MainPage;
-
-// const MainPage = () => {
-//     const allTasks = useSelector(selectAllTasks);
-//     return (
-//         <>
-//             <Navbar bg="dark" data-bs-theme="dark" fixed="top">
-//                 <Container>
-//                     <Navbar.Brand href="#home">
-//                         <img
-//                             alt="Task Manager"
-//                             src={img}
-//                             width="80"
-//                             height="40"
-//                             className="d-inline-block align-top"
-//                         />Task Manager
-//                     </Navbar.Brand>
-//                 </Container>
-//             </Navbar>
-//             <Offcanvas show={true} placement="end">
-//                 <Offcanvas.Header closeButton>
-//                     <Offcanvas.Title>Tasks</Offcanvas.Title>
-//                 </Offcanvas.Header>
-//                 <Offcanvas.Body>
-//                 </Offcanvas.Body>
-//             </Offcanvas>
-//         </>
-//     );
-// };
-
-// export default MainPage;
