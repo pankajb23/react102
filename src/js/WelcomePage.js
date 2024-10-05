@@ -8,7 +8,7 @@ const taskList = [
     {
         id: 1,
         name: "Sprint 71",
-        description:"",
+        description: "",
         createdBy: "John Doe",
         createdDate: "2024-05-01",
         colorCode: "#ff6347",
@@ -20,7 +20,7 @@ const taskList = [
     {
         id: 2,
         name: "Diagnostics incrementally",
-        description:"",
+        description: "",
         createdBy: "Jane Smith",
         createdDate: "2024-04-29",
         colorCode: "#4caf50",
@@ -34,32 +34,75 @@ export default function TaskLayout() {
     const [selectedTask, setSelectedTask] = useState(null);
     const [showWelcomePage, setShowWelcomePage] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [tasks, setTasks] = useState(taskList);
+    const [allTasks, setTasks] = useState(taskList);
 
     const handleTaskClick = (task) => {
         setSelectedTask(task);
-        
+        console.log("Updating selected task " + JSON.stringify(task));
         setShowWelcomePage(false); // Hide the welcome page when a task is selected
     };
 
     const handleDeleteTask = (taskId) => {
         // Implement task delete logic here
-        console.log("Delete Task with ID:", taskId);
+        const updatedTasks = allTasks.filter(task => task.id !== taskId);
+
+        // Update the state with the filtered tasks
+        setTasks([...updatedTasks]);
+
+        console.log("Deleted Task with ID:", taskId);
     };
 
-    const handleDeleteSubtask = (subtaskId) => {
+    const handleDeleteSubtask = (taskId, subtaskId) => {
         // Implement subtask delete logic here
-        console.log("Delete Subtask with ID:", subtaskId);
+
+        const updatedTasks = allTasks.map(task => {
+            if (task.id === taskId) {
+                // Filter out the subTask with the matching subTaskId
+                const updatedSubTasks = task.subtasks.filter(subTask => subTask.id !== subtaskId);
+                const newTask = { ...task, subtasks: updatedSubTasks };
+                if (selectedTask && selectedTask.id === taskId) {
+                    handleTaskClick(newTask);
+                }
+                // Return a new task object with updated subTasks
+                return newTask;
+            } else {
+                // Return the task as is if it doesn't match the taskId
+                return task;
+            }
+        });
+        console.log("Delete Subtask with ID:" + subtaskId + " and taskId " + taskId + " and json of the rest of the tasks " + JSON.stringify(updatedTasks));
+        setTasks([...updatedTasks]);
     };
 
-    const handleToggleSubtaskComplete = (subtaskId) => {
+    const handleToggleSubtaskComplete = (taskId, subtaskId) => {
         // Implement subtask toggle logic here
-        console.log("Toggle Subtask Complete with ID:", subtaskId);
-
+        console.log("Toggle Subtask Complete with ID:" + subtaskId + "\t" + " taskID " + taskId);
+        const updatedTasks = allTasks.map(task => {
+            if (task.id === taskId) {
+                const newTask = {
+                    ...task, subtasks: task.subtasks.map((s) => {
+                        if (s.id === subtaskId) {
+                            return { ...s, isCompleted: !s.isCompleted };
+                        } else {
+                            return s;
+                        }
+                    })
+                }
+                if (selectedTask && selectedTask.id === taskId) {
+                    handleTaskClick(newTask);
+                }
+                return newTask;
+            } else {
+                // Return the task as is if it doesn't match the taskId
+                return task;
+            }
+        });
+        console.log("toggle subtasks ");
+        setTasks([...updatedTasks]);
     };
 
     const handleAddTask = (newTask) => {
-        setTasks([...tasks, newTask]);
+        setTasks([...allTasks, newTask]);
     };
 
     const openModal = () => {
@@ -100,7 +143,7 @@ export default function TaskLayout() {
                 <div className="heading">Welcome Delta, on your task manager</div>
                 <div className="task-layout">
                     <div className="task-list">
-                        {tasks.map((task) => (
+                        {allTasks.length > 0 && allTasks.map((task) => (
                             <div
                                 key={task.id}
                                 className={`task-list-item ${selectedTask && selectedTask.id === task.id ? "selected" : ""}`}
@@ -109,7 +152,8 @@ export default function TaskLayout() {
                                 <h4>{task.name}</h4>
                                 <p>{new Date(task.createdDate).toLocaleDateString()}</p>
                             </div>
-                        ))}
+                        ))
+                        }
                     </div>
                     {/* Right side - Welcome Page or Task description and subtasks */}
                     <div className="task-details">
@@ -120,16 +164,16 @@ export default function TaskLayout() {
                                 onDeleteSubtask={handleDeleteSubtask}
                                 onToggleSubtaskComplete={handleToggleSubtaskComplete}
                             />) : <div className="details-placeholder"><p>    No task selected </p></div>
-                            }
+                        }
                     </div>
                 </div>
                 {/* Modal pop-up for adding a new task */}
                 {isModalOpen && <TaskModal onClose={closeModal} onAddTask={handleAddTask} />}
                 <div className="floating-plus-container">
-                    <img src={plusImage} alt="Add Task" 
-                        className="floating-plus-sign" 
+                    <img src={plusImage} alt="Add Task"
+                        className="floating-plus-sign"
                         onClick={openModal}
-                        style={{ width: "50px", height: "50px", objectFit: "cover" }}/>
+                        style={{ width: "50px", height: "50px", objectFit: "cover" }} />
                 </div>
             </div>);
     }
