@@ -9,9 +9,16 @@ import "./css/task.css"
 import "./css/subtask.css"
 import nestedDataReducer from './js/TaskSlicer.js';
 import { createStore } from 'redux';
+// Importing the Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { configureStore } from '@reduxjs/toolkit';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = createStore(nestedDataReducer);
+const store = configureStore({
+  reducer: {
+    nestedData: nestedDataReducer,
+  },
+});
 console.log("I hope reducer are finally up.")
 root.render(
   <React.StrictMode>

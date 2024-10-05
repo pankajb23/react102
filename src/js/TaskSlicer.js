@@ -5,27 +5,28 @@ const initialState = {
         {
             id: 1,
             name: "Sprint 71",
-            description: "",
+            description: "Omega delta gamma",
             createdBy: "John Doe",
             createdDate: "2024-05-01",
             colorCode: "#ff6347",
             subtasks: [
-                { id: 1, name: "DBT gem changes", description: "Update the gem versions", createdAt: "2024-05-01", dueDate: "2024-05-10", isCompleted: false },
-                { id: 2, name: "Testing", description: "Run integration tests", createdAt: "2024-05-02", dueDate: "2024-05-09", isCompleted: true },
+                { id: 1, name: "DBT gem changes", description: "Update the gem versions", createdAt: "2024-05-01", dueDate: "2024-05-10", status: "In Progress" },
+                { id: 2, name: "Testing", description: "Run integration tests", createdAt: "2024-05-02", dueDate: "2024-05-09", status: "Not Started" },
             ],
         },
         {
             id: 2,
             name: "Diagnostics incrementally",
-            description: "",
+            description: "Ergo sum",
             createdBy: "Jane Smith",
             createdDate: "2024-04-29",
             colorCode: "#4caf50",
             subtasks: [
-                { id: 3, name: "Fix navigation issues", description: "Handle onChange in forms", createdAt: "2024-04-29", dueDate: "2024-05-03", isCompleted: false },
+                { id: 3, name: "Fix navigation issues", description: "Handle onChange in forms", createdAt: "2024-04-29", dueDate: "2024-05-03", status: "Not Started" },
             ],
         },
-    ]
+    ],
+    selectedTask: 1 // only attach taskId here. 
 };
 
 const ActionTypes = {
@@ -74,9 +75,11 @@ const nestedDataSlice = createSlice({
         },
         updateSubTaskAttribute: (state, action) => {
             const { taskId, subTaskId, attribute, value } = action.payload;
+            console.log("Payload " + JSON.stringify(action.payload));
+            console.log("Updating subtask attribute " + taskId + " " + subTaskId + " " + attribute + " " + value);
             const task = state.tasks.find(task => task.id === taskId);
             if (task) {
-                const subtask = task.find(subTask => subTaskId == subTask.id);
+                const subtask = task.subtasks.find(subTask => subTaskId == subTask.id);
                 if (subtask) {
                     subtask[attribute] = value;
                 }
@@ -99,14 +102,32 @@ const nestedDataSlice = createSlice({
             if (task) {
                 task[attribute] = value;
             }
+        },
+        selectTask: (state, action) => {
+            const { task } = action.payload;
+            const selectedTask = state.tasks.find(taskI => taskI.id === task.id);
+            if (task) {
+                state.selectedTask = task.id;
+            }
         }
     },
 });
 
-export const { addTask, addSubtask, updateSubtaskAttribute, removeTask, removeSubtask } = nestedDataSlice.actions;
+export const { addTask, addSubtask, updateSubTaskAttribute, removeTask, removeSubtask, selectTask } = nestedDataSlice.actions;
 
 // Selectors
-export const selectAllTasks = state => state.tasks.tasks;
-export const selectTaskById = (state, taskId) => state.tasks.tasks.find(task => task.id === taskId);
+export const selectAllTasks = state => state.nestedData.tasks;
+export const selectTaskById = (state, taskId) => state.nestedData.tasks.find(task => task.id === taskId);
+export const getSelectedTask = state => state.nestedData.tasks.find(task => task.id === state.nestedData.selectedTask);
+export const getSelectedSubTask = (state, taskId, subTaskId) => {
+    const task = state.nestedData.tasks.find(task => task.id === taskId);
+    if (task) {
+        const subtask = task.subtasks.find(subtask => subtask.id === subTaskId);
+        console.log("Subtask " + JSON.stringify(subtask));
+        return subtask;
+    }
+    return null;
+}
+
 
 export default nestedDataSlice.reducer;

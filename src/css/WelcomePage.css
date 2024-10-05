@@ -181,3 +181,15 @@
   .modal form button[type="button"]:hover {
     background-color: #999;
   }
+
+  .task-card-transition:hover {
+    z-index: 20;
+    background-color: #d8d6d6;
+    transition: z-index 0.2s ease-in-out, background-color 0.2s ease-in-out;
+  }
+
+  .no-border-style{
+    border: none;
+    border-color: white;
+    border-style:none;
+  }
